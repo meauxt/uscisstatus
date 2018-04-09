@@ -1,7 +1,7 @@
 from lxml import html
 import re
 import requests
-from datetime import datetime 
+from datetime import datetime
 
 CASE_DATE_PATTERN = r"[(A-Za-z)]*\s[\d]*,\s[\d]*"
 URL = "https://egov.uscis.gov/casestatus/mycasestatus.do"
@@ -11,6 +11,7 @@ CASE_STATUS = "CHECK STATUS"
 UPDATE_TEXT_XPATH = "/html/body/div[2]/form/div/div[1]/div/div/div[2]/div[3]/p/text()"
 MISSING_URL_PATTEN = "','|', '"
 TEXT_FILTER_PATTERN = r"['\[\]]"
+
 
 def joke():
     return (u'Wenn ist das Nunst\u00fcck git und Slotermeyer? Ja! ... '
@@ -26,18 +27,18 @@ def get_case_status(case_id):
     content = html.fromstring(r.content)
     text = str(content.xpath(UPDATE_TEXT_XPATH))
     if len(text) < 2:
-        raise Exception("Please make sure you case id is valid")
-        
+        raise ValueError("Please make sure you case id is valid")
+
     text = str(re.sub("','|', '", 'USCIS website', text))
     status_message = re.sub(r"['\[\]]", ' ', text)
-    
+
     p = re.search(CASE_DATE_PATTERN, status_message)
     if p is not None:
         match = p.group(0)
         last_update_date = datetime.strptime(str(match), "%B %d, %Y")
         last_update_date = last_update_date.strftime('%m/%d/%Y')
 
-        return status_message, last_update_date
+        return {'status': status_message, 'date': last_update_date}
 
     else:
-        raise Exception("Please make sure you case id is valid")
+        raise ValueError("Please make sure you case id is valid")
