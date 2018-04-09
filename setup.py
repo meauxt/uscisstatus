@@ -7,5 +7,9 @@ setup(name='uscisstatus',
       author='Mohamad Tarbin',
       author_email='mhed.t91@gmail.com',
       license='MIT',
-      packages=['requests','lxml','uscisstatus'],
+      packages=['uscisstatus'],
+       install_requires=[
+          'requests',
+          'lxml'
+      ],
       zip_safe=False)
