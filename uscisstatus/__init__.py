@@ -13,11 +13,6 @@ MISSING_URL_PATTEN = "','|', '"
 TEXT_FILTER_PATTERN = r"['\[\]]"
 
 
-def joke():
-    return (u'Wenn ist das Nunst\u00fcck git und Slotermeyer? Ja! ... '
-            u'Beiherhund das Oder die Flipperwaldt gersput.')
-
-
 def get_case_status(case_id):
 
     data = {APP_RECEIPT_NUM: case_id,
